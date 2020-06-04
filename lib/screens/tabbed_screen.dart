@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:bedava_audio_recorder/constants.dart';
+import 'package:bedava_audio_recorder/models/containerised_tab.dart';
 
 class TabbedScreen extends StatefulWidget {
   @override
@@ -7,18 +9,18 @@ class TabbedScreen extends StatefulWidget {
 
 class _TabbedScreenState extends State<TabbedScreen>
     with SingleTickerProviderStateMixin {
-  final List<Tab> tabs = <Tab>[
-    Tab(
-      text: 'Record',
-      icon: Icon(Icons.mic),
+  final List<Widget> tabs = <Widget>[
+    ContainerisedTab(
+      height: kTabBarHeight,
+      iconData: Icons.mic,
     ),
-    Tab(
-      text: 'List',
-      icon: Icon(Icons.list),
+    ContainerisedTab(
+      height: kTabBarHeight,
+      iconData: Icons.list,
     ),
-    Tab(
-      text: 'Settings',
-      icon: Icon(Icons.settings),
+    ContainerisedTab(
+      height: kTabBarHeight,
+      iconData: Icons.settings,
     ),
   ];
 
@@ -39,15 +41,21 @@ class _TabbedScreenState extends State<TabbedScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TabBar(
-        controller: _tabController,
-        tabs: tabs,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kTabBarHeight),
+        child: TabBar(
+          controller: _tabController,
+          tabs: tabs,
+        ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(
-            child: Text('1'),
+          Container(
+            color: Colors.green,
+            child: Center(
+              child: Text('1'),
+            ),
           ),
           Center(
             child: Text('2'),
