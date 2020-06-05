@@ -1,6 +1,7 @@
+import 'package:bedava_audio_recorder/widgets/recorder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bedava_audio_recorder/constants.dart';
-import 'package:bedava_audio_recorder/models/containerised_tab.dart';
+import 'package:bedava_audio_recorder/widgets/containerised_tab.dart';
 
 class TabbedScreen extends StatefulWidget {
   @override
@@ -53,9 +54,7 @@ class _TabbedScreenState extends State<TabbedScreen>
         children: [
           Container(
             color: Colors.green,
-            child: Center(
-              child: Text('1'),
-            ),
+            child: RecorderWidget(),
           ),
           Center(
             child: Text('2'),
