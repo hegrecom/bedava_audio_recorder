@@ -53,7 +53,6 @@ class _TabbedScreenState extends State<TabbedScreen>
         controller: _tabController,
         children: [
           Container(
-            color: Colors.green,
             child: RecorderWidget(),
           ),
           Center(
