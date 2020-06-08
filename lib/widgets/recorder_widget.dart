@@ -33,131 +33,145 @@ class _RecorderWidgetState extends State<RecorderWidget> {
     return Center(
       child: Padding(
         padding: EdgeInsets.all(25.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-            Widget>[
-          Text(
-            '${_recordingFile?.duration.toString().split('.').first.padLeft(8, "0")}',
-            style: TextStyle(fontSize: 70.0),
-          ),
-          Center(
-            child: Container(
-              height: 100.0,
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: <Widget>[
-                  Container(
-                    height: 80.0,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '${_recordingFile?.duration.toString().split('.').first.padLeft(8, "0")}',
+                style: TextStyle(fontSize: 70.0),
+              ),
+              Center(
+                child: Container(
+                  height: 100.0,
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: <Widget>[
+                      Opacity(
+                        opacity:
+                            _recordingStatus == RecordingStatus.Recording ||
+                                    _recordingStatus == RecordingStatus.Paused
+                                ? 1.0
+                                : 0.0,
+                        child: Container(
+                          height: 80.0,
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: CircleBorder(),
+                          ),
+                          child: IconButton(
+                            iconSize: 40.0,
+                            icon: Icon(Icons.stop),
+                            color: Colors.red,
+                            onPressed: () {
+                              print('Stop button tapped');
+                              _stop();
+                              _init();
+                            },
+                          ),
+                        ),
+                      ),
+                      IgnorePointer(
+                        ignoring:
+                            _recordingStatus == RecordingStatus.Recording ||
+                                    _recordingStatus == RecordingStatus.Paused
+                                ? true
+                                : false,
+                        child: Opacity(
+                          opacity:
+                              _recordingStatus == RecordingStatus.Recording ||
+                                      _recordingStatus == RecordingStatus.Paused
+                                  ? 0.0
+                                  : 1.0,
                           child: Container(
-                            width: 56.0,
-                            height: 56.0,
+                            height: 80.0,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: <Widget>[
+                                Center(
+                                  child: Container(
+                                    width: 56.0,
+                                    height: 56.0,
+                                    decoration: ShapeDecoration(
+                                      color: Colors.white,
+                                      shape: CircleBorder(),
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  iconSize: 60.0,
+                                  icon: Icon(Icons.lens),
+                                  color: Colors.red,
+                                  onPressed: () {
+                                    print('Record button tapped');
+                                    _start();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Opacity(
+                        opacity: _recordingStatus == RecordingStatus.Paused
+                            ? 1.0
+                            : 0.0,
+                        child: Align(
+                          alignment: Alignment(0.25, 1.0),
+                          child: Container(
+                            width: 35.0,
+                            height: 35.0,
                             decoration: ShapeDecoration(
                               color: Colors.white,
                               shape: CircleBorder(),
                             ),
+                            child: IconButton(
+                              iconSize: 20.0,
+                              color: ThemeData.dark().scaffoldBackgroundColor,
+                              icon: Icon(Icons.redo),
+                              onPressed: () {
+                                print('Resume button tapped');
+                                _resume();
+                              },
+                            ),
                           ),
                         ),
-                        IconButton(
-                          iconSize: 60.0,
-                          icon: Icon(Icons.lens),
-                          color: Colors.red,
-                          onPressed: () {
-                            print('record button tapped!');
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment(0.25, 1.0),
-                    child: Opacity(
-                      opacity: 1.0,
-                      child: Container(
-                        width: 35.0,
-                        height: 35.0,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: CircleBorder(),
-                        ),
-                        child: IconButton(
-                          iconSize: 20.0,
-                          color: ThemeData.dark().scaffoldBackgroundColor,
-                          icon: Icon(Icons.pause),
-                          onPressed: () {
-                            print('pause button');
-                          },
+                      ),
+                      IgnorePointer(
+                        ignoring: _recordingStatus != RecordingStatus.Recording
+                            ? true
+                            : false,
+                        child: Opacity(
+                          opacity: _recordingStatus == RecordingStatus.Recording
+                              ? 1.0
+                              : 0.0,
+                          child: Align(
+                            alignment: Alignment(0.25, 1.0),
+                            child: Container(
+                              width: 35.0,
+                              height: 35.0,
+                              decoration: ShapeDecoration(
+                                color: Colors.white,
+                                shape: CircleBorder(),
+                              ),
+                              child: IconButton(
+                                iconSize: 20.0,
+                                color: ThemeData.dark().scaffoldBackgroundColor,
+                                icon: Icon(Icons.pause),
+                                onPressed: () {
+                                  print('Pause button tapped');
+                                  _pause();
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new FlatButton(
-                  onPressed: () {
-                    switch (_recordingStatus) {
-                      case RecordingStatus.Initialized:
-                        {
-                          _start();
-                          break;
-                        }
-                      case RecordingStatus.Recording:
-                        {
-                          _pause();
-                          break;
-                        }
-                      case RecordingStatus.Paused:
-                        {
-                          _resume();
-                          break;
-                        }
-                      case RecordingStatus.Stopped:
-                        {
-                          _init();
-                          break;
-                        }
-                      default:
-                        break;
-                    }
-                  },
-                  child: _buildText(_recordingStatus),
-                  color: Colors.lightBlue,
                 ),
               ),
-              new FlatButton(
-                onPressed:
-                    _recordingStatus != RecordingStatus.Unset ? _stop : null,
-                child: new Text("Stop", style: TextStyle(color: Colors.white)),
-                color: Colors.blueAccent.withOpacity(0.5),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              new FlatButton(
-                onPressed: onPlayAudio,
-                child: new Text("Play", style: TextStyle(color: Colors.white)),
-                color: Colors.blueAccent.withOpacity(0.5),
-              ),
-            ],
-          ),
-          new Text("Status : $_recordingStatus"),
-          new Text('Avg Power: ${_recordingFile?.metering?.averagePower}'),
-          new Text('Peak Power: ${_recordingFile?.metering?.peakPower}'),
-          new Text("File path of the record: ${_recordingFile?.path}"),
-          new Text("Format: ${_recordingFile?.audioFormat}"),
-          new Text(
-              "isMeteringEnabled: ${_recordingFile?.metering?.isMeteringEnabled}"),
-          new Text("Extension : ${_recordingFile?.extension}"),
-        ]),
+              new Text('Peak Power: ${_recordingFile?.metering?.peakPower}'),
+            ]),
       ),
     );
   }
