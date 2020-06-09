@@ -1,4 +1,5 @@
 import 'package:bedava_audio_recorder/screens/recorder_screen.dart';
+import 'package:bedava_audio_recorder/screens/player_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bedava_audio_recorder/constants.dart';
 import 'package:bedava_audio_recorder/widgets/containerised_tab.dart';
@@ -56,7 +57,7 @@ class _TabbedScreenState extends State<TabbedScreen>
             child: RecorderScreen(),
           ),
           Center(
-            child: Text('2'),
+            child: PlayerScreen(),
           ),
           Center(
             child: Text('3'),
