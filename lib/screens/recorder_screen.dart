@@ -7,17 +7,17 @@ import 'package:file/file.dart';
 import 'package:file/local.dart';
 import 'dart:io' as io;
 
-class RecorderWidget extends StatefulWidget {
+class RecorderScreen extends StatefulWidget {
   final LocalFileSystem localFileSystem;
 
-  RecorderWidget({localFileSystem})
+  RecorderScreen({localFileSystem})
       : this.localFileSystem = localFileSystem ?? LocalFileSystem();
 
   @override
-  _RecorderWidgetState createState() => _RecorderWidgetState();
+  _RecorderScreenState createState() => _RecorderScreenState();
 }
 
-class _RecorderWidgetState extends State<RecorderWidget> {
+class _RecorderScreenState extends State<RecorderScreen> {
   FlutterAudioRecorder _recorder;
   Recording _recordingFile;
   RecordingStatus _recordingStatus = RecordingStatus.Unset;
