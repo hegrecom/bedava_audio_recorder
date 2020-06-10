@@ -24,6 +24,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) => ListTile(
           title: Text(_files[index].path.split('/').last),
+          subtitle: Text(
+              _files[index].lastModifiedSync().toString().split('.').first),
           onTap: () {
             _playSound(_files[index].path);
           },
