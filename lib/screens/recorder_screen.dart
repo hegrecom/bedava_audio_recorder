@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_audio_recorder/flutter_audio_recorder.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:file/file.dart';
 import 'package:file/local.dart';
 import 'dart:io' as io;
@@ -292,10 +291,5 @@ class _RecorderScreenState extends State<RecorderScreen> {
         break;
     }
     return Text(text, style: TextStyle(color: Colors.white));
-  }
-
-  void onPlayAudio() async {
-    AudioPlayer audioPlayer = AudioPlayer();
-    await audioPlayer.play(_recordingFile.path, isLocal: true);
   }
 }
