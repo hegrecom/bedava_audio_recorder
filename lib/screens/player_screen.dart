@@ -9,7 +9,7 @@ class PlayerScreen extends StatefulWidget {
 }
 
 class _PlayerScreenState extends State<PlayerScreen> {
-  List<io.File> _files;
+  List<io.File> _files = [];
 
   @override
   void initState() {
@@ -20,17 +20,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(
-        children: _files != null
-            ? _files
-                .map((e) => ListTile(
-                      title: Text(e.path.split('/').last),
-                      onTap: () {
-                        _playSound(e.path);
-                      },
-                    ))
-                .toList()
-            : [],
+      child: ListView.separated(
+        separatorBuilder: (context, index) => Divider(),
+        itemBuilder: (context, index) => ListTile(
+          title: Text(_files[index].path.split('/').last),
+          onTap: () {
+            _playSound(_files[index].path);
+          },
+        ),
+        itemCount: _files.length,
       ),
     );
   }
