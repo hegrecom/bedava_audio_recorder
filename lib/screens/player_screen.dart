@@ -10,6 +10,7 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen> {
   List<io.File> _files = [];
+  PersistentBottomSheetController bottomSheetController;
 
   @override
   void initState() {
@@ -20,6 +21,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: ThemeData.dark().dividerColor,
+        ),
+      ),
       child: ListView.separated(
         separatorBuilder: (context, index) => Divider(),
         itemBuilder: (context, index) => ListTile(
@@ -28,6 +34,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
               _files[index].lastModifiedSync().toString().split('.').first),
           onTap: () {
             _playSound(_files[index].path);
+            _showBottomSheet(context);
+          },
+          onLongPress: () {
+            _closeBottomSheet();
           },
         ),
         itemCount: _files.length,
@@ -59,5 +69,59 @@ class _PlayerScreenState extends State<PlayerScreen> {
   void _playSound(String path) async {
     AudioPlayer audioPlayer = AudioPlayer();
     await audioPlayer.play(path, isLocal: true);
+  }
+
+  void _showBottomSheet(BuildContext context) {
+    bottomSheetController = showBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        height: 150,
+        decoration: BoxDecoration(
+          color: ThemeData.dark().cardColor,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.skip_previous,
+                    size: 40.0,
+                  ),
+                  Icon(
+                    Icons.play_arrow,
+                    size: 60.0,
+                  ),
+                  Icon(
+                    Icons.skip_next,
+                    size: 40.0,
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Text('00:00'),
+                  Expanded(
+                    child: Slider(
+                      value: 0.0,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  Text('00:00'),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _closeBottomSheet() {
+    bottomSheetController.close();
   }
 }
